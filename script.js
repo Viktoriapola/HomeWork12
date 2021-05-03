@@ -2,7 +2,7 @@
 const input = document.querySelector('#input');
 const button = document.querySelector('#button');
 let div = document.querySelector('.text');
-const time = 30;
+const time = 4;
 const password = "myFreedom-2011";
 
 const onInput = function () {
@@ -19,16 +19,21 @@ const onInput = function () {
 
 input.addEventListener('input', onInput);
 
-function clock(time) {
-    return setInterval(() => {
-        if (time > 0) {
-            div.innerHTML = time--;
-        };
+function clock(time, func) {
+
+    const id = setInterval(() => {
+        time--;
+        if (time !== 0) {
+            div.innerHTML = time;
+        } else {
+            clearInterval(id);
+            func();
+        }
     }, 1000);
 };
 
 let num = 3;
-
+ 
 function onButton() {
     if (input.value === "") {
         div.innerHTML = "Вы не ввели пароль";
@@ -45,7 +50,11 @@ function onButton() {
         if (num === 0) {
             input.style.display = 'none';
             button.style.display = 'none';
-            clock(time);
+            clock(time, () => {
+                input.style.display = 'block';
+                button.style.display = 'block';
+                div.style.display = 'none'
+            });
         };
     };
 };
